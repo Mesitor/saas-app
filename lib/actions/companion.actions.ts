@@ -64,7 +64,7 @@ export const addToSessionHistory = async (companionId: string) => {
 export const getRecentSessions = async (limit = 10) => {
     const supabase = createSupabaseClient()
 
-    //Seleccionamos de companions la columna con el id que mandamos y devuelve todo lo que contenga
+    //Seleccionamos en companions todos los companion_id que haya en session_history (y sus datos) en orden del mas reciente al mas viejo
     const { data, error } = await supabase.from('session_history').select(`companions:companion_id (*)`).order('created_at', { ascending: false }).limit(limit)
 
     if (error) throw new Error(error.message);
@@ -81,4 +81,15 @@ export const getUserSessions = async (userId: string, limit = 10) => {
     if (error) throw new Error(error.message);
 
     return data.map(({ companions }) => companions)
+}
+
+export const getUserCompanions = async (userId: string) => {
+    const supabase = createSupabaseClient()
+
+    //Seleccionamos de companions la columna con el id que mandamos y todo lo que contenga
+    const { data, error } = await supabase.from('companions').select().eq('author', userId)
+
+    if (error) throw new Error(error.message);
+
+    return data;
 }
