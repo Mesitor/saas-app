@@ -159,7 +159,7 @@ export const addBookmark = async (companionId: string, path: string) => {
         user_id: userId
     });
 
-    if (error) throw new Error(error.message);
+    if (error) throw  new Error(error.message);
 
     // Esto para re-renderizar la pagina
     revalidatePath(path);
